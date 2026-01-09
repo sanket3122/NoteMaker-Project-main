@@ -1,47 +1,68 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const Navbar = () => {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem("token");
     navigate("/login");
-  }
+  };
+
+  const isActive = (path) => (location.pathname === path ? "active" : "");
 
   return (
-    <nav className="navbar navbar-expand-lg navbar navbar-dark bg-dark border-bottom">
-      <div className="container-fluid">
-        <Link className="navbar-brand" to="/">
+    <nav className="navbar navbar-expand-lg">
+      <div className="container-fluid position-relative px-3">
+
+        {/* Left: Brand */}
+        <Link className="navbar-brand d-flex align-items-center gap-2" to="/home">
+          <span
+            style={{
+              width: 10,
+              height: 10,
+              borderRadius: 999,
+              background: "linear-gradient(135deg, #2563eb, #38bdf8)",
+              display: "inline-block",
+            }}
+          />
           iNoteBook
+          <span className="badge ms-2">Mongo + BigQuery</span>
         </Link>
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav">
+
+        {/* Center: Nav */}
+        <div className="position-absolute start-50 translate-middle-x">
+          <ul className="navbar-nav flex-row gap-2">
             <li className="nav-item">
-              <Link className="nav-link active" aria-current="page" to="/home">
-                Home
-              </Link>
+              <Link className={`nav-link ${isActive("/home")}`} to="/home">Home</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/Remainders">
-                Remainders
-              </Link>
+              <Link className={`nav-link ${isActive("/Remainders")}`} to="/Remainders">Reminders</Link>
             </li>
           </ul>
         </div>
+
+        {/* Right: Actions */}
+        <div className="nav-actions ms-auto d-flex align-items-center gap-2">
+          {localStorage.getItem("token") ? (
+            <>
+              <Link className="btn btn-outline-dark" to="/profile" role="button">
+                <i className="fa-solid fa-user" />
+              </Link>
+              <button className="btn btn-primary" onClick={handleLogout}>
+                Logout <i className="fa-solid fa-right-from-bracket" style={{ marginLeft: 6 }} />
+              </button>
+            </>
+          ) : (
+            <>
+              <Link className="btn btn-outline-dark" to="/login" role="button">Login</Link>
+              <Link className="btn btn-primary" to="/signup" role="button">Signup</Link>
+            </>
+          )}
+        </div>
+
       </div>
-      
-      {localStorage.getItem('token') ? 
-      <form className="d-flex">
-        <Link className="btn btn-outline-light mx-1" to="/profile" role="button"><i className="fa-solid fa-user" style={{color: "ffffff"}}></i></Link>
-        <button className="btn btn-outline-light mx-1" onClick={handleLogout}>Logout<i className="fa-solid fa-right-from-bracket" style={{display: "inline", padding: "4px"}}></i></button>
-      </form>
-
-        : <form className="d-flex">
-          <Link className="btn btn-outline-light mx-1" to="/login" role="button">Login</Link>
-          <Link className="btn btn-outline-light mx-1" to="/signup" role="button">Signup</Link>
-        </form>}
-
     </nav>
   );
 };

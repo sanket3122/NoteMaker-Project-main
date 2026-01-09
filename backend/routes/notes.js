@@ -47,11 +47,11 @@ const port = 5000;
 
 // Initialize Google Cloud Storage
 const storage = new Storage({
-  keyFilename: 'C:/Users/sanke/Desktop/inotebook/backend/key-for-serviceaccount/sanket-348b6-2a7091892247.json',
+  keyFilename: '/Users/sanket/Desktop/Projects/NoteMaker-Project-main/backend/key-for-serviceaccount/sanket-348b6-3ad61cc3ac3b.json',
   projectId: 'sanket-348b6',
 });
 const bigquery = new BigQuery({
-  keyFilename: 'C:/Users/sanke/Desktop/inotebook/backend/key-for-serviceaccount/sanket-348b6-2a7091892247.json',
+  keyFilename: '/Users/sanket/Desktop/Projects/NoteMaker-Project-main/backend/key-for-serviceaccount/sanket-348b6-3ad61cc3ac3b.json',
   projectId: 'sanket-348b6',
 });
 
@@ -116,7 +116,7 @@ with DAG(
     
     backup_task
     `;
-    const bucketName2 = 'us-central1-mycompo-c63ce491-bucket';  //DAG folder bucket name created by composer.
+    const bucketName2 = 'us-central1-composer1-eacee6e4-bucket';  //DAG folder bucket name created by composer.
     const bucket2 = storage.bucket(bucketName2);
     const file2 = bucket2.file(`dags/cloud_storage_backup_dag.py`);   //dag folder/filename.py
     await file2.save(pythoncode, 'text/x-python');

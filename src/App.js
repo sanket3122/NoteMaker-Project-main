@@ -9,6 +9,8 @@ import Alert from "./components/Alert";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Profile from "./components/Profile";
+import "./styles/global.css";
+
 // import { Upload } from "@google-cloud/storage/build/cjs/src/resumable-upload";
 // import Remainders from "./components/Remainders";
 // for V5 version of react-router-dom to V6 version ref below link

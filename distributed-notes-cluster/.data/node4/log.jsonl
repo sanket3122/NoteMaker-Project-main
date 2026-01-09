@@ -1,0 +1,6 @@
+{"index":0,"term":1,"command":{"type":"upsert_note","user_id":"","note_id":"note_1","title":"Hello from Raft","description":"This should replicate","tag":"default"},"time_utc":"2026-01-02T23:01:07.974487Z"}
+{"index":1,"term":180,"command":{"type":"NOTE_CREATE","user_id":"test-user-1","note_id":"note-1","title":"Hello Cluster","description":"Written directly to leader","tag":"raft"},"time_utc":"2026-01-07T08:00:14.328596Z"}
+{"index":2,"term":392,"command":{"type":"NOTE_CREATE","user_id":"695e138f8aea0e0f1ea8b4f1","note_id":"ed518f9c-a505-420d-b602-2f38c07f2bdf","title":"sadsadsaddasd","description":"asdadad","tag":"default"},"time_utc":"2026-01-09T17:07:48.062527Z"}
+{"index":3,"term":392,"command":{"type":"NOTE_DELETE","user_id":"695e138f8aea0e0f1ea8b4f1","note_id":"ed518f9c-a505-420d-b602-2f38c07f2bdf"},"time_utc":"2026-01-09T17:08:42.36807Z"}
+{"index":4,"term":392,"command":{"type":"NOTE_CREATE","user_id":"695e138f8aea0e0f1ea8b4f1","note_id":"3525eb67-742f-4235-9a9a-44bdc199f7f4","title":"hi there","description":"hi there","tag":"default"},"time_utc":"2026-01-09T17:09:17.280881Z"}
+{"index":5,"term":403,"command":{"type":"NOTE_CREATE","user_id":"695e138f8aea0e0f1ea8b4f1","note_id":"de27d01d-c746-4918-8203-1b65729ccd30","title":"AAAAAAA","description":"AAAAA","tag":"default"},"time_utc":"2026-01-09T20:45:09.850239Z"}

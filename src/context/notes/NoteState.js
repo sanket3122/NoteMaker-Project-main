@@ -20,11 +20,11 @@ const NoteState = (props) => {
         // Add more notes as needed
       ],
     };
-  
+
     try {
       console.log("data from backend", jsonData);
       // Upload JSON data to GCS
-     
+
       const storage = new Storage();
       const bucketName = 'mybuck01232';
       const bucket = storage.bucket(bucketName);
@@ -32,7 +32,7 @@ const NoteState = (props) => {
       await file.save(JSON.stringify(jsonData), {
         contentType: 'application/json',
       });
-  
+
       console.log('JSON file uploaded to GCS successfully.');
       // Handle success here, such as updating UI or showing a message
     } catch (error) {
@@ -40,25 +40,25 @@ const NoteState = (props) => {
       // Handle error here, such as showing an error message to the user
     }
   };
-  
 
-  
+
+
 
   // const MyComponent = () => {
   //   // JSON data containing notes
-    // const jsonData = {
-    //   notes: [
-    //     { id: 1, text: 'Note 1' },
-    //     { id: 2, text: 'Note 2' },
-    //     // Add more notes as needed
-    //   ],
-    // };
-  
+  // const jsonData = {
+  //   notes: [
+  //     { id: 1, text: 'Note 1' },
+  //     { id: 2, text: 'Note 2' },
+  //     // Add more notes as needed
+  //   ],
+  // };
+
   //   // Upload JSON data to GCS when component mounts
   //   React.useEffect(() => {
   //     uploadToGCS(jsonData);
   //   }, []);
-  
+
   //   return (
   //     <div>
   //       <h1>Uploading JSON to GCS</h1>
@@ -66,37 +66,37 @@ const NoteState = (props) => {
   //     </div>
   //   );
   // };
-  
-  
 
 
 
 
 
 
-const fetchUser2 = async () => {
-  const Host = "http://localhost:5001";
-  //API call
-  const url = `${Host}/api/auth/getuser`;
-  
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      "auth-token": `${localStorage.getItem('token')}`,
-    },
-  });
-  initialUser = await response.json();
-
- Object.keys(initialUser).forEach(key => {
-  const value = initialUser[key];
-  userDataArray.push([key, value]);
-});
-setusername(userDataArray[1][1]);
-setemailid(userDataArray[2][1]);
-setdate(userDataArray[3][1]);
 
 
-};
+  const fetchUser2 = async () => {
+    const Host = "http://localhost:5001";
+    //API call
+    const url = `${Host}/api/auth/getuser`;
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "auth-token": `${localStorage.getItem('token')}`,
+      },
+    });
+    initialUser = await response.json();
+
+    Object.keys(initialUser).forEach(key => {
+      const value = initialUser[key];
+      userDataArray.push([key, value]);
+    });
+    setusername(userDataArray[1][1]);
+    setemailid(userDataArray[2][1]);
+    setdate(userDataArray[3][1]);
+
+
+  };
 
 
 
@@ -128,8 +128,15 @@ setdate(userDataArray[3][1]);
       body: JSON.stringify({ title, description, tag }),
     });
     console.log(response);
-    const note = await response.json();
-    setnotes(notes.concat(note));
+//  ----------------
+// changed for distibuted node - keep in mind 
+    // const note = await response.json();
+    // setnotes(notes.concat(note));
+// -------------
+    const json = await response.json();
+    if (json && json._id) {
+      setnotes(prev => prev.concat(json));
+    }
 
   };
 
@@ -189,20 +196,20 @@ setdate(userDataArray[3][1]);
   };
   return (
     <NoteContext.Provider
-    value={{
-      // uploadToGCS,
-      // MyComponent,
-      handleUploadClick,
-      notes,
-      username,
-      emailid,
-      date,
-      fetchallNote,
-      addNote,
-      deleteNote,
-      editNote,
-      fetchUser2,
-    }}
+      value={{
+        // uploadToGCS,
+        // MyComponent,
+        handleUploadClick,
+        notes,
+        username,
+        emailid,
+        date,
+        fetchallNote,
+        addNote,
+        deleteNote,
+        editNote,
+        fetchUser2,
+      }}
     >
       {props.children}
     </NoteContext.Provider>
