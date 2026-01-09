@@ -1,10 +1,13 @@
-# iNoteBook — Raft-backed Distributed Notes Cluster (5 Nodes) + Prometheus + Grafana
+# 📝 iNoteBook - Raft-backed Distributed Notes Cluster (5 Nodes) + Prometheus + Grafana
 
-A full-stack notes app where **writes go to a Raft leader**, get replicated across a **5-node Go cluster**, and you can **watch leader elections + replication health live** in Grafana.
+✨ A full-stack notes app where **writes go to a Raft leader**, get replicated across a **5-node Go cluster**, and you can **watch leader elections + replication health live** in Grafana. 🔥
 
-This is not “just CRUD”. This is **distributed consensus + durability + observability**.
+🚫 This is not “just CRUD”.  
+✅ This is **distributed consensus + durability + observability**. ⚙️🛡️🔭
 
 ---
+
+
 
 ## What this project delivers
 
@@ -64,10 +67,9 @@ flowchart LR
 
   Graf[Grafana :3001] --> Prom
 ```
+## 🧱 Tech Stack (Production-style, detailed)
 
-## Tech Stack (Production-style, detailed)
-
-### Frontend (Web UI)
+### 🌐 Frontend (Web UI)
 - **React (SPA)**  
   - Notes CRUD UI, auth flows, dashboards, export actions
 - **React Router**  
@@ -81,7 +83,7 @@ flowchart LR
 
 ---
 
-### Backend (API Gateway)
+### 🚪 Backend (API Gateway)
 - **Node.js + Express**
   - Acts as the **gateway** between UI and distributed Raft cluster
   - Exposes stable REST endpoints to frontend:
@@ -107,7 +109,7 @@ flowchart LR
 
 ---
 
-### Distributed System (Raft Notes Cluster)
+### 🧭 Distributed System (Raft Notes Cluster)
 - **Go (Golang)**
   - 5-node cluster (`7101`–`7105`)
 - **Raft consensus (leader-based replication)**
@@ -126,7 +128,7 @@ flowchart LR
 
 ---
 
-### Observability / Monitoring
+### 🔭 Observability / Monitoring
 - **Prometheus**
   - Scrapes `GET /metrics` from each node
   - Stores time-series metrics for analysis + alerting
@@ -142,7 +144,7 @@ flowchart LR
 
 ---
 
-### Google Cloud (Export + Analytics)
+### ☁️ Google Cloud (Export + Analytics)
 - **Google Cloud Service Account (IAM)**
   - Used by backend for secure server-to-server authentication
   - Recommended minimal roles:
@@ -160,21 +162,22 @@ flowchart LR
     - time-based trends
 
 ---
+## 🧠 What each part does (core system behavior)
 
-## What each part does (core system behavior)
-
-### 1) Frontend (React UI)
+### 1) 🎨 Frontend (React UI)
 - Collects user input and displays notes.
 - Calls gateway APIs and updates UI state.
 - Does not talk directly to Raft nodes (keeps cluster internal and secure).
 
-### 2) Backend Gateway (Node/Express)
+---
+
+### 2) 🚪 Backend Gateway (Node/Express)
 This is the “production move”.
 - **Auth boundary:** validates JWT and enforces user scope.
 - **API boundary:** provides consistent REST interface to UI.
 - **Cluster boundary:** handles Raft leader routing so frontend stays simple.
 
-**Write flow (create/update/delete):**
+**✍️ Write flow (create/update/delete):**
 1. UI calls `POST /api/notes/addnotes`
 2. Backend builds a Raft command payload
 3. Backend discovers leader (or follows redirect) and sends to:
@@ -182,7 +185,7 @@ This is the “production move”.
 4. Cluster replicates + commits
 5. Backend returns the created note to UI
 
-**Read flow (fetch all notes):**
+**📥 Read flow (fetch all notes):**
 1. UI calls `GET /api/notes/fetchAllNotes`
 2. Backend reads from cluster:
    - `GET http://<any-node>/client/notes?user_id=<id>`
@@ -190,7 +193,9 @@ This is the “production move”.
 
 > If you want “read-your-write consistency”, set reads to leader only.
 
-### 3) Distributed Cluster (Go + Raft)
+---
+
+### 3) 🧭 Distributed Cluster (Go + Raft)
 - Guarantees **one leader at a time**.
 - Guarantees committed commands replicate before being “successful”.
 - Persists replicated commands in WAL (`log.jsonl`) so restart doesn’t lose state.
@@ -201,7 +206,9 @@ This gives you:
 - durability
 - eventual read consistency across nodes
 
-### 4) Prometheus (metrics collector)
+---
+
+### 4) 📡 Prometheus (metrics collector)
 - Polls each node’s `/metrics` endpoint every few seconds.
 - Stores Raft health data over time.
 - Enables querying like:
@@ -209,7 +216,9 @@ This gives you:
   - “is apply lag growing”
   - “are rpc errors spiking”
 
-### 5) Grafana (visual + operational)
+---
+
+### 5) 📊 Grafana (visual + operational)
 - Shows cluster health at a glance.
 - Core dashboard panels:
   - **Leader election:** `raft_role` with value mappings (Follower/Candidate/Leader)
@@ -217,16 +226,21 @@ This gives you:
   - **Stability:** term changes (leader churn)
   - **Networking:** rpc error rate
 
-### 6) BigQuery (analytics use cases)
-BigQuery is not for serving notes in realtime.
+---
+
+### 6) 🧮 BigQuery (analytics use cases)
+BigQuery is not for serving notes in realtime.  
 It’s for analysis, trends, and dashboards.
+
 Examples:
 - usage trends per day/week
 - top tags / categories
 - most active users (for admin analytics)
 - anomaly detection signals (future extension)
 
-### 7) GCS (export / backup use cases)
+---
+
+### 7) 🪣 GCS (export / backup use cases)
 - Long-term object storage for JSON exports.
 - Use cases:
   - backups
@@ -235,7 +249,7 @@ Examples:
   - audit snapshots
 
 ---
-
+<!--
 ## Required configuration (Cloud, optional)
 
 ### Environment variables (Backend)
@@ -252,6 +266,78 @@ Set these in backend runtime (example names — match your code):
 - Give minimal permissions:
   - GCS bucket scoped
   - BigQuery dataset scoped
-
 > Never commit service account keys to GitHub.
+--->
+#### Repo Structure
 
+```text
+NoteMaker-Project-main/
+  backend/                      # Node.js API gateway + auth + REST endpoints for notes
+  distributed-notes-cluster/    # Go Raft cluster (5 nodes) + write-ahead log + metrics
+    scripts/
+      run_5.sh                  # Convenience script to start node1..node5 together
+    .data/
+      node1..node5/             # WAL + persisted Raft state for each node
+  Images/                       # Screenshots used in README / portfolio
+```
+---
+### 📸 Screenshots
+
+<p align="center"> <img src="https://raw.githubusercontent.com/sanket3122/NoteMaker-Project-main/main/Images-1/home.png" width="850"/><br/> <sub><b>Home:</b> Notes workspace UI (add notes + list notes + export options).</sub> <br/><br/>
+<p align="center">
+<img src="https://raw.githubusercontent.com/sanket3122/NoteMaker-Project-main/main/Images-1/userprofile.png" width="850"/><br/>
+<sub><b>User Profile:</b> Authenticated user flow with JWT-backed session.</sub>
+<br/><br/>
+<p align="center">
+<img src="https://raw.githubusercontent.com/sanket3122/NoteMaker-Project-main/main/Images-1/usercred_mongodb.png" width="850"/><br/>
+<sub><b>MongoDB (User/Auth):</b> User credentials/profile storage for login + JWT issuance.</sub>
+<br/><br/>
+<p align="center">
+<img src="https://raw.githubusercontent.com/sanket3122/NoteMaker-Project-main/main/Images-1/notes_mongodb.png" width="850"/><br/>
+<sub><b>MongoDB (Legacy/Optional):</b> Notes persisted in Mongo in the non-distributed mode (kept for comparison).</sub>
+<br/><br/>
+<p align="center">
+<img src="https://raw.githubusercontent.com/sanket3122/NoteMaker-Project-main/main/Images-1/dataStoredInNodes.png" width="900"/><br/>
+<sub><b>Raft Persistence:</b> Notes replicated + persisted per node using WAL (log.jsonl).</sub>
+<br/><br/>
+<p align="center">
+<img src="https://raw.githubusercontent.com/sanket3122/NoteMaker-Project-main/main/Images-1/notesJson.png" width="900"/><br/>
+<sub><b>Cluster Read API:</b> /client/notes?user_id=... returning the replicated state as JSON.</sub>
+<br/><br/>
+<p align="center">
+<img src="https://raw.githubusercontent.com/sanket3122/NoteMaker-Project-main/main/Images-1/cloud_storage.png" width="900"/><br/>
+<sub><b>GCS Export:</b> Notes exported as JSON objects into Google Cloud Storage buckets.</sub>
+<br/><br/>
+<p align="center">
+<img src="https://raw.githubusercontent.com/sanket3122/NoteMaker-Project-main/main/Images-1/backupBucket.png" width="900"/><br/>
+<sub><b>Backup Bucket:</b> Dedicated bucket for durable note exports / backups.</sub>
+<br/><br/>
+<p align="center">
+<img src="https://raw.githubusercontent.com/sanket3122/NoteMaker-Project-main/main/Images-1/backupData.png" width="900"/><br/>
+<sub><b>Backup Data:</b> Exported note payloads stored as versioned JSON for recovery/portability.</sub>
+<br/><br/>
+<p align="center">
+<img src="https://raw.githubusercontent.com/sanket3122/NoteMaker-Project-main/main/Images-1/bigquery.png" width="900"/><br/>
+<sub><b>BigQuery Analytics:</b> Notes/events available for SQL analytics (tags, activity, engagement).</sub>
+<br/><br/>
+<p align="center">
+<img src="https://raw.githubusercontent.com/sanket3122/NoteMaker-Project-main/main/Images-1/Google%20serverice%20account.png" width="900"/><br/>
+<sub><b>Service Account:</b> Least-privilege GCP auth for programmatic GCS + BigQuery access.</sub>
+<br/><br/>
+<p align="center">
+<img src="https://raw.githubusercontent.com/sanket3122/NoteMaker-Project-main/main/Images-1/DAG%20code.png" width="900"/><br/>
+<sub><b>Airflow DAG (Code):</b> Automates scheduled GCS backup jobs (production-style automation).</sub>
+<br/><br/>
+<p align="center">
+<img src="https://raw.githubusercontent.com/sanket3122/NoteMaker-Project-main/main/Images-1/DAG2.png" width="900"/><br/>
+<sub><b>Airflow DAG (Graph):</b> Visual pipeline view for backup/export workflow execution.</sub>
+<br/><br/>
+<p align="center">
+<img src="https://raw.githubusercontent.com/sanket3122/NoteMaker-Project-main/main/Images-1/prometheus.png" width="900"/><br/>
+<sub><b>Prometheus Targets:</b> All 5 Raft nodes scraped via /metrics (cluster visibility).</sub>
+<br/><br/>
+<p align="center">
+<img src="https://raw.githubusercontent.com/sanket3122/NoteMaker-Project-main/main/Images-1/grafana.png" width="900"/><br/>
+<sub><b>Grafana Dashboard:</b> Leader election + term + commit/apply + errors (real-time cluster health).</sub>
+
+</p>
