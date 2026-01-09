@@ -67,7 +67,7 @@ flowchart LR
 
   Graf[Grafana :3001] --> Prom
 ```
-## 🧱 Tech Stack (Production-style, detailed)
+## 🧱 Tech Stack:
 
 ### 🌐 Frontend (Web UI)
 - **React (SPA)**  
@@ -339,5 +339,7 @@ NoteMaker-Project-main/
 <p align="center">
 <img src="https://raw.githubusercontent.com/sanket3122/NoteMaker-Project-main/main/Images-1/grafana.png" width="900"/><br/>
 <sub><b>Grafana Dashboard:</b> Leader election + term + commit/apply + errors (real-time cluster health).</sub>
+
+## Happy learning
 
 </p>
