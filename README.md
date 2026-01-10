@@ -332,6 +332,12 @@ NoteMaker-Project-main/
 <img src="https://raw.githubusercontent.com/sanket3122/NoteMaker-Project-main/main/Images-1/DAG2.png" width="900"/><br/>
 <sub><b>Airflow DAG (Graph):</b> Visual pipeline view for backup/export workflow execution.</sub>
 <br/><br/>
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/sanket3122/NoteMaker-Project-main/main/Images-1/dockerdesktop.png" width="900"/><br/>
+<sub><b>Prometheus + Grafana running as containers, exposing 9090 (Prometheus) and 3001 (Grafana) for live cluster monitoring.</sub>
+<br/><br/>
+  <!-- dockerdesktop.png -->
 <p align="center">
 <img src="https://raw.githubusercontent.com/sanket3122/NoteMaker-Project-main/main/Images-1/prometheus.png" width="900"/><br/>
 <sub><b>Prometheus Targets:</b> All 5 Raft nodes scraped via /metrics (cluster visibility).</sub>
